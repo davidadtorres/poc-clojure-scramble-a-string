@@ -1,3 +1,6 @@
+(ns clojure.robins10.scramble
+   (:gen-class))
+
 (defn search-char [i s c]
   "Search a char into a string"
   (if (and (not= (get s i) c) (not= i (count s)))
