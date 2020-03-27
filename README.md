@@ -1,5 +1,5 @@
 # Clojure Challenge #1 - Scramble a string 
-## `0.1.0-3`
+## `0.1.0-4`
 ## Description
 A Clojure function that returns True if a portion of a first character string parameter (a set of characters) can be rearranged to match with a second character string parameter, otherwise, return False.
 ## Changelog
@@ -11,4 +11,4 @@ A Clojure function that returns True if a portion of a first character string pa
   - `Initiated at 27-Mar-2020`
 #### First Commit
 - 0.0.0: First Commit
-  - `Project initiated at 26-Mar-2020`
+  - `Initiated at 26-Mar-2020`
