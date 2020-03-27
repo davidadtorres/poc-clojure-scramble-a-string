@@ -1,39 +1,55 @@
 (ns clojure.robins10.scramble
    (:gen-class))
 
-(defn search-char [i s c]
-  "Search a char into a string"
-  (if (and (not= (get s i) c) (not= i (count s)))
-    (do (recur (inc i) s c))
-    (do 
-      (if (= i (count s))
-        false
-        true))))
+(require '[clojure.string :refer :all])
 
-(defn scramble [s1 s2 f]
+(defn scramble [s1 s2]
   "Scramble a string. It returns True if a portion of a first character string
   parameter (a set of characters) can be rearranged to match with a second
   character string parameter, otherwise, return False"
-  (let [i 0]
-    (loop [j 0]
-      (if (and (< j (count s2)) (f i s1 (get s2 j)))
-        (do (recur (inc j)))
-        (do
-          (if (= j (count s2))
-            true
-            false))))))
+    (if (and 
+          (> (count s1) 0)
+          (> (count s2) 0))
+      (let [search-char (fn [] (includes? s1 s2))
+            search-first (fn [] (includes? s1 (subs s2 0 1)))]
+        (if (= (count s2) 1)
+          (search-char)
+          (if (search-first)
+            (recur s1 (subs s2 1 (count s2)))
+            false)))))
 
-(println "Does \"rqodlw\" contain \"world\"? TRUE")
-(assert (scramble "rqodlw" "world" search-char))
+; Tests
+(def str1 "rwodlw")
+(def str2 "world")
+(println (str "Does \""str1"\" contain \""str2"\"? TRUE"))
+(assert (scramble str1 str2))
 
-(println "Does \"rqodlw\" contain \"worlx\"? FALSE")
-(assert (not (scramble "rqodlw" "worlx" search-char)))
+(def str1 "rwodlw")
+(def str2 "worlx")
+(println (str "Does \""str1"\" contain \""str2"\"? FALSE"))
+(assert (not (scramble str1 str2)))
 
-(println "Does \"rqodlw\" contain \"dworl\"? TRUE")
-(assert (scramble "rqodlw" "dworl" search-char))
+(def str1 "rwodlw")
+(def str2 "dworl")
+(println (str "Does \""str1"\" contain \""str2"\"? TRUE"))
+(assert (scramble str1 str2))
 
-(println "Does \"w\" contain \"wo-rl\"? FALSE")
-(assert (not (scramble "w" "wo-rl" search-char)))
+(def str1 "w")
+(def str2 "wo-rld")
+(println (str "Does \""str1"\" contain \""str2"\"? FALSE"))
+(assert (not (scramble str1 str2)))
 
-(println "Does \"r\" contain \"r\"? TRUE")
-(assert (scramble "r" "r" search-char))
+(def str1 "rwodlw")
+(def str2 "-world")
+(println (str "Does \""str1"\" contain \""str2"\"? FALSE"))
+(assert (not (scramble str1 str2)))
+
+(def str1 "r")
+(def str2 "r")
+(println (str "Does \""str1"\" contain \""str2"\"? TRUE"))
+(assert (scramble str1 str2))
+
+(def str1 "r")
+(def str2 "x")
+(println (str "Does \""str1"\" contain \""str2"\"? FALSE"))
+(assert (not (scramble str1 str2)))
